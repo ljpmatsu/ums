@@ -113,6 +113,6 @@ function addToAccount(user , amount) {
     const suma = user.amount.reduce(function (prev, curr) {
         return prev + curr;
     }, 0);
-    console.log('Wpłacono ' + amount + '. Masz na koncie ' + suma + ' cebulionów');
+    console.log(`Wpłacono ${amount}. Masz na koncie ${suma} cebulionów`);
     return user;
 }
