@@ -17,16 +17,21 @@ function welcomeChoose() {
 
         const userListRaw = fs.readFileSync('users.json');
         const userList = JSON.parse(userListRaw);
-
-        const newUserID = libGenerateID.generateID(1 , 9999999);
-        if (userList.id.includes(newUserID) === true) {
-            generateID(1 , 9999999);
-        }
-
-        fs.writeFileSync(`./accounts/${newUserID}.json` ,
-        `{"id":"${newUserID}","passwd":"${newUserPasswd}","name":"${newUserName}","amount":[0]}`);
+        
+        const newUserID = libGenerateID.generateID(1 , 999999);
+        checkNewID();
 
         userList.id.push(newUserID.toString());
+        function checkNewID() {
+            if (userList.id.includes(newUserID.toString()) === true) {
+                newUserID = libGenerateID.generateID(1 , 999999);
+                checkNewID();
+            }
+        }
+        
+        fs.writeFileSync(`./accounts/${newUserID}.json` ,
+        `{"id":"${newUserID}","passwd":"${newUserPasswd}","name":"${newUserName}","amount":[0]}`);
+        
         const usersJson = JSON.stringify(userList);
         fs.writeFileSync('users.json' , usersJson);
         
