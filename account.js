@@ -23,15 +23,15 @@ function welcomeChoose() {
             generateID(1 , 9999999);
         }
 
-        fs.writeFileSync('./accounts/' + newUserID + '.json' ,
-        '{"id":"' + newUserID + '","passwd":"' + newUserPasswd + '","name":"' + newUserName + '","amount":[0]}');
+        fs.writeFileSync(`./accounts/${newUserID}.json` ,
+        `{"id":"${newUserID}","passwd":"${newUserPasswd}","name":"${newUserName}","amount":[0]}`);
 
         userList.id.push(newUserID.toString());
         const usersJson = JSON.stringify(userList);
         fs.writeFileSync('users.json' , usersJson);
         
         console.clear();
-        console.log('Twoj numer uzytkownika to: ' + newUserID + '. Uzywaj go do logowania, zapisz i nie zapomnij.');
+        console.log(`Twoj numer uzytkownika to: ${newUserID}. Uzywaj go do logowania, zapisz i nie zapomnij.`);
         
     }
     else if (action[index] === 'Zaloguj') { 
@@ -50,7 +50,8 @@ if (userList.id.includes(userID) === false) {
     libWrong.wrongUser();
 }
 
-const userActiveRaw = fs.readFileSync('./accounts/' + userID + '.json');
+const userActiveRaw = fs.readFileSync(`./accounts/${userID}.json`);
+// ('./accounts/' + userID + '.json');
 const userActive = JSON.parse(userActiveRaw);
 
 const userPasswd = readlineSync.question('Podaj haslo: ');
@@ -59,7 +60,7 @@ if (userPasswd !== userActive.passwd) {
     libWrong.wrongPassword();
 }
 
-console.log('Witaj ' + userActive.name);
+console.log(`Witaj ${userActive.name}`);
 choose();
 
 function choose() {
@@ -83,7 +84,7 @@ function choose() {
         const userCurrentAmmount = userActive.amount.reduce(function (prev, curr) {
             return prev + curr;
         }, 0);
-        console.log('Masz ' + userCurrentAmmount + ' cebulionów. Co chcesz zrobić?');
+        console.log(`Masz ${userCurrentAmmount} cebulionów. Co chcesz zrobić?`);
         choose();
     }
 }
@@ -94,13 +95,13 @@ function chargeAccount(user , amount) {
     }, 0);
 
     if (amount > suma) {
-        console.log(user.name + ': Chcesz wypłacić ' + amount + '. Masz ' + suma + '. Zbyt mało cebulionów!');
+        console.log(`${user.name}: Chcesz wypłacić ${amount}. Masz ${suma}. Zbyt mało cebulionów!`);
     }
     else {
         user.amount.push(-amount);
         const currentAmount = (suma - amount);
         libAction.saveAmount(userActive , userID);
-        console.log('Wypłacono ' + amount + '. Masz na koncie ' + currentAmount + ' cebulionów');
+        console.log(`Wypłacono ${amount}. Masz na koncie ${currentAmount} cebulionów`);
     }
     return user;
 }
